@@ -3,7 +3,7 @@ import React from 'react'
 import './App.css'
 import CurrentlyReading from './CurrentlyReading'
 import currentlyReading from './CurrentlyReading'
-import Read from './Read'
+import Read from './shelf'
 import WantToRead from './WantToRead'
 import * as BooksAPI from './BooksAPI';
 const currentlyReadingList = [];
