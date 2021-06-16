@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import './App.css'
-
+ 
 class Read extends Component {
   constructor(props) {
     super(props);
