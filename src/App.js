@@ -1,10 +1,8 @@
 import React from 'react'
 // import * as BooksAPI from './BooksAPI'
 import './App.css'
-import CurrentlyReading from './CurrentlyReading'
-import currentlyReading from './CurrentlyReading'
-import Read from './shelf'
-import WantToRead from './WantToRead'
+import Shelf from './shelf'
+
 import * as BooksAPI from './BooksAPI';
 const currentlyReadingList = [];
 const wantToReadList = [];
@@ -18,6 +16,7 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     showSearchPage: false
+   
   }
 
   // Make api call to get all books
@@ -25,33 +24,30 @@ class BooksApp extends React.Component {
     try {
       BooksAPI.getAll().then((response) => {
         if (response.length > 0) {
-          response.map((book) => (
-           switch (book.shelf) {
-             case "currentlyReading":
-              currentlyReadingList.push(book)
-               
-               break;
-               case "wantToRead":
-                wantToReadList.push(book)
-                
+          response.map((book) => {
+            switch (book.shelf) {
+              case "currentlyReading":
+                currentlyReadingList.push(book)
                 break;
-               case "read":
-                readList.push(book)
-           
-             default:
-               break;
-           }
-          ))
+              case "wantToRead":
+                wantToReadList.push(book)
+                break;
+              case "read":
+                readList.push(book)  
+                break;
+              default:
+                break;
+            }
+          })
         }
       })
     } catch (error) {
       console.log(error);
     }
-
-
   }
   componentDidMount() {
     this.getAllBooks()
+
   }
   render() {
     return (
@@ -84,9 +80,9 @@ class BooksApp extends React.Component {
               </div>
               <div className="list-books-content">
                 <div>
-                  <CurrentlyReading />
-                  <WantToRead />
-                  <Read />
+                  <Shelf books={currentlyReadingList} shelfName="Currently Reading" />
+                  <Shelf books={wantToReadList} shelfName="Want To Read" />
+                  <Shelf books={readList} shelfName="Read" />
                 </div>
               </div>
               <div className="open-search">
