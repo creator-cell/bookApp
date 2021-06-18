@@ -13,16 +13,16 @@ class Read extends Component {
     
     return (
       <div className="bookshelf">
-        <h2 className="bookshelf-title">{this.props.shelfName}</h2>
+        <h2 className="bookshelf-title">{this.props.shelf.name}</h2>
         <div className="bookshelf-books">
           <ol className="books-grid">
 
-          {books.map((bookDetails) => {
+          {books.filter((item) => item.shelf === this.props.shelf.shelf).map((bookDetails) => {
             let element =
-            <li>
+            <li key={bookDetails.id}>
               <div className="book">
                 <div className="book-top">
-                  <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: 'url("")' }}></div>
+                  <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${bookDetails.imageLinks.smallThumbnail})` }}></div>
                   <div className="book-shelf-changer">
                     <select>
                       <option value="move" disabled>Move to...</option>
@@ -34,7 +34,10 @@ class Read extends Component {
                   </div>
                 </div>
                 <div className="book-title">{bookDetails.title}</div>
-                <div className="book-authors">J.R.R. Tolkien</div>
+                {bookDetails.authors.map((author)=>(
+                  <div className="book-authors">{author}</div>
+                ))}
+                
               </div>
             </li>
             return element
