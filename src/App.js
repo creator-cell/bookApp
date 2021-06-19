@@ -2,7 +2,7 @@ import React from 'react'
 import './App.css'
 import Shelf from './shelf'
 import * as BooksAPI from './BooksAPI';
- 
+
 class BooksApp extends React.Component {
   state = {
     /**
@@ -12,12 +12,12 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     showSearchPage: false,
-    books:[],
-    shelves:[{"shelf": "currentlyReading", "name": "Currently Reading"}, 
-            {"shelf":"wantToRead", "name": "Want To Read"}, 
-            {"shelf": "read", "name":"Read"}
-          ]
-   
+    books: [],
+    shelves: [{ "shelf": "currentlyReading", "name": "Currently Reading" },
+    { "shelf": "wantToRead", "name": "Want To Read" },
+    { "shelf": "read", "name": "Read" }
+    ]
+
   }
 
   // Make api call to get all books
@@ -25,19 +25,12 @@ class BooksApp extends React.Component {
     try {
       BooksAPI.getAll().then((response) => {
         if (response.length > 0) {
-          this.setState({books: response})
+          this.setState({ books: response })
         }
-        // console.log(this.state.books)
+
       })
     } catch (error) {
       console.log(error);
-    }
-  }
-  handleShelfChange = (bookId, shelf) =>{
-    try {
-      
-    } catch (error) {
-      
     }
   }
 
@@ -76,11 +69,9 @@ class BooksApp extends React.Component {
               </div>
               <div className="list-books-content">
                 <div>
-                {this.state.shelves.map((shelf) => (
-                  <Shelf books={this.state.books} shelf={shelf} />
-                ))}
-               
-                  
+                  {this.state.shelves.map((shelf) => (
+                    <Shelf books={this.state.books} shelf={shelf} />
+                  ))}
                 </div>
               </div>
               <div className="open-search">
