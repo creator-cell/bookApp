@@ -12,6 +12,8 @@ class Read extends Component {
   }
 
   handleShelfChange = (bookId, shelf) => {
+    console.log("book id ---", bookId);
+    console.log("Shelf ----", shelf);
     try {
       BooksAPI.update(bookId, shelf).then((response) => {
         console.log(response);
@@ -23,6 +25,7 @@ class Read extends Component {
 
   render() {
     const { books, shelf } = this.props;
+    
     return (
       <div className="bookshelf">
         <h2 className="bookshelf-title">{shelf.name}</h2>
@@ -36,7 +39,7 @@ class Read extends Component {
                     <div className="book-top">
                       <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${bookDetails.imageLinks.smallThumbnail})` }}></div>
                       <div className="book-shelf-changer">
-                        <select onChange={(event) => this.handleShelfChange(bookDetails.id, event.target.value)} >
+                        <select onChange={(event) => this.handleShelfChange(bookDetails.id, event.target.value)} value={bookDetails.shelf}>
                           <option value="move" disabled>Move to...</option>
                           <option value="currentlyReading">Currently Reading</option>
                           <option value="wantToRead">Want to Read</option>
