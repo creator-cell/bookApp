@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import './App.css'
 import * as BooksAPI from './BooksAPI';
 
@@ -11,20 +10,8 @@ class Read extends Component {
     }
   }
 
-  handleShelfChange = (bookId, shelf) => {
-    console.log("book id ---", bookId);
-    console.log("Shelf ----", shelf);
-    try {
-      BooksAPI.update(bookId, shelf).then((response) => {
-        console.log(response);
-      })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   render() {
-    const { books, shelf } = this.props;
+    const { books, shelf,  shelfChange} = this.props;
     
     return (
       <div className="bookshelf">
@@ -39,7 +26,7 @@ class Read extends Component {
                     <div className="book-top">
                       <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${bookDetails.imageLinks.smallThumbnail})` }}></div>
                       <div className="book-shelf-changer">
-                        <select onChange={(event) => this.handleShelfChange(bookDetails.id, event.target.value)} value={bookDetails.shelf}>
+                        <select onChange={(event) => shelfChange(bookDetails.id, event.target.value)} value={bookDetails.shelf}>
                           <option value="move" disabled>Move to...</option>
                           <option value="currentlyReading">Currently Reading</option>
                           <option value="wantToRead">Want to Read</option>

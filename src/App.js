@@ -38,6 +38,27 @@ class BooksApp extends React.Component {
     this.getAllBooks()
 
   }
+
+  handleShelfChange = (bookId, shelf) => {
+
+    try {
+      BooksAPI.update({ id: bookId }, shelf).then((response) => (
+        this.setState((prevstate) => ({
+        books: prevstate.books.filter(b => {
+          if (b.id === bookId) {
+            return (b.shelf = shelf);
+          }
+          else {
+            return (response);
+          }
+        })
+      })
+      )
+      ));
+    } catch (error) {
+      console.log(error)
+    }
+  }
   render() {
     return (
       <div className="app">
@@ -70,7 +91,7 @@ class BooksApp extends React.Component {
               <div className="list-books-content">
                 <div>
                   {this.state.shelves.map((shelf) => (
-                    <Shelf books={this.state.books} shelf={shelf} />
+                    <Shelf books={this.state.books} shelf={shelf} shelfChange={(bookId, shelf) => this.handleShelfChange(bookId, shelf)} />
                   ))}
                 </div>
               </div>
