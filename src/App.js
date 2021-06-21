@@ -1,7 +1,9 @@
 import React from 'react'
 import './App.css'
+import * as BooksAPI from './BooksAPI'
 import Shelf from './shelf'
-import * as BooksAPI from './BooksAPI';
+import Search from './Search'
+
 
 class BooksApp extends React.Component {
   state = {
@@ -13,9 +15,10 @@ class BooksApp extends React.Component {
      */
     showSearchPage: false,
     books: [],
-    shelves: [{ "shelf": "currentlyReading", "name": "Currently Reading" },
-    { "shelf": "wantToRead", "name": "Want To Read" },
-    { "shelf": "read", "name": "Read" }
+    shelves: [
+      { "shelf": "currentlyReading", "name": "Currently Reading" },
+      { "shelf": "wantToRead", "name": "Want To Read" },
+      { "shelf": "read", "name": "Read" }
     ]
 
   }
@@ -35,25 +38,27 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
-    this.getAllBooks()
+    this.getAllBooks();
+
 
   }
+
 
   handleShelfChange = (bookId, shelf) => {
 
     try {
       BooksAPI.update({ id: bookId }, shelf).then((response) => (
         this.setState((prevstate) => ({
-        books: prevstate.books.filter(b => {
-          if (b.id === bookId) {
-            return (b.shelf = shelf);
-          }
-          else {
-            return (response);
-          }
+          books: prevstate.books.filter(b => {
+            if (b.id === bookId) {
+              return (b.shelf = shelf);
+            }
+            else {
+              return (response);
+            }
+          })
         })
-      })
-      )
+        )
       ));
     } catch (error) {
       console.log(error)
@@ -63,26 +68,11 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         {this.state.showSearchPage ? (
-          <div className="search-books">
-            <div className="search-books-bar">
-              <button className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</button>
-              <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                <input type="text" placeholder="Search by title or author" />
-
-              </div>
-            </div>
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
-            </div>
-          </div>
+          <Search shelfChange={(bookId, shelf) => this.handleShelfChange(bookId, shelf)} onNavigate={()=>{
+            this.setState(()=>({
+              showSearchPage: false
+            }))
+          }}/>
         ) : (
             <div className="list-books">
               <div className="list-books-title">
@@ -91,7 +81,7 @@ class BooksApp extends React.Component {
               <div className="list-books-content">
                 <div>
                   {this.state.shelves.map((shelf) => (
-                    <Shelf books={this.state.books} shelf={shelf} shelfChange={(bookId, shelf) => this.handleShelfChange(bookId, shelf)} />
+                    <Shelf books={this.state.books} shelf={shelf} shelfChange={(bookId, shelf) => this.handleShelfChange(bookId, shelf)} from="books"/>
                   ))}
                 </div>
               </div>

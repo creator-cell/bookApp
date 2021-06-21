@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './App.css'
-import * as BooksAPI from './BooksAPI';
+
 
 class Read extends Component {
 
@@ -24,7 +24,11 @@ class Read extends Component {
                 <li key={bookDetails.id}>
                   <div className="book">
                     <div className="book-top">
-                      <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${bookDetails.imageLinks.smallThumbnail})` }}></div>
+                    {bookDetails.imageLinks ? (
+                          <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${bookDetails.imageLinks.smallThumbnail})` }}></div>
+                        ) : (
+                            <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url()` }}></div>
+                          )}
                       <div className="book-shelf-changer">
                         <select onChange={(event) => shelfChange(bookDetails.id, event.target.value)} value={bookDetails.shelf}>
                           <option value="move" disabled>Move to...</option>
@@ -36,9 +40,12 @@ class Read extends Component {
                       </div>
                     </div>
                     <div className="book-title">{bookDetails.title}</div>
-                    {bookDetails.authors.map((author) => (
-                      <div className="book-authors" key={author}>{author}</div>
-                    ))}
+                    {bookDetails.authors ? (
+                        bookDetails.authors.map((author) => (
+                          <div className="book-authors" key={author}>{author}</div>
+                        ))
+                      ) : (<div className="book-authors" key=""></div>)}
+
 
                   </div>
                 </li>
