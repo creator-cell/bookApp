@@ -11,50 +11,38 @@ class Read extends Component {
   }
 
   render() {
-    const { books, shelf,  shelfChange} = this.props;
-    
+    const { book, shelfChange } = this.props;
+
     return (
-      <div className="bookshelf">
-        <h2 className="bookshelf-title">{shelf.name}</h2>
-        <div className="bookshelf-books">
-          <ol className="books-grid">
 
-            {books.filter((item) => item.shelf === shelf.shelf).map((bookDetails) => {
-              let element =
-                <li key={bookDetails.id}>
-                  <div className="book">
-                    <div className="book-top">
-                    {bookDetails.imageLinks ? (
-                          <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${bookDetails.imageLinks.smallThumbnail})` }}></div>
-                        ) : (
-                            <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url()` }}></div>
-                          )}
-                      <div className="book-shelf-changer">
-                        <select onChange={(event) => shelfChange(bookDetails.id, event.target.value)} value={bookDetails.shelf}>
-                          <option value="move" disabled>Move to...</option>
-                          <option value="currentlyReading">Currently Reading</option>
-                          <option value="wantToRead">Want to Read</option>
-                          <option value="read">Read</option>
-                          <option value="none">None</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="book-title">{bookDetails.title}</div>
-                    {bookDetails.authors ? (
-                        bookDetails.authors.map((author) => (
-                          <div className="book-authors" key={author}>{author}</div>
-                        ))
-                      ) : (<div className="book-authors" key=""></div>)}
+      <li key={book.id}>
+        <div className="book">
+          <div className="book-top">
+            {book.imageLinks ? (
+              <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
+            ) : (
+                <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url()` }}></div>
+              )}
+            <div className="book-shelf-changer">
+              <select onChange={(event) => shelfChange(book.id, event.target.value)} value={book.shelf}>
+                <option value="move" disabled>Move to...</option>
+                <option value="currentlyReading">Currently Reading</option>
+                <option value="wantToRead">Want to Read</option>
+                <option value="read">Read</option>
+                <option value="none">None</option>
+              </select>
+            </div>
+          </div>
+          <div className="book-title">{book.title}</div>
+          {book.authors ? (
+            book.authors.map((author) => (
+              <div className="book-authors" key={author}>{author}</div>
+            ))
+          ) : (<div className="book-authors" key=""></div>)}
 
 
-                  </div>
-                </li>
-              return element
-            })}
-
-          </ol>
         </div>
-      </div>
+      </li>
     );
   }
 }

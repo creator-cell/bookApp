@@ -3,6 +3,7 @@ import './App.css'
 import * as BooksAPI from './BooksAPI'
 import Shelf from './shelf'
 import Search from './Search'
+import { Link, Route } from "react-router-dom";
 
 
 class BooksApp extends React.Component {
@@ -67,31 +68,45 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
-          <Search shelfChange={(bookId, shelf) => this.handleShelfChange(bookId, shelf)} onNavigate={()=>{
-            this.setState(()=>({
-              showSearchPage: false
-            }))
-          }}/>
-        ) : (
-            <div className="list-books">
-              <div className="list-books-title">
-                <h1>MyReads</h1>
-              </div>
-              <div className="list-books-content">
-                <div>
-                  {this.state.shelves.map((shelf) => (
-                    <Shelf books={this.state.books} shelf={shelf} shelfChange={(bookId, shelf) => this.handleShelfChange(bookId, shelf)} from="books"/>
-                  ))}
-                </div>
-              </div>
-              <div className="open-search">
-                <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
+        <Route eaxct path='/' render={() => (
+          <div className="list-books">
+            <div className="list-books-title">
+              <h1>MyReads</h1>
+            </div>
+            <div className="list-books-content">
+              <div>
+                {this.state.shelves.map((shelf) => (
+                  <div className="bookshelf">
+                    <h2 className="bookshelf-title">{shelf.name}</h2>
+                    <div className="bookshelf-books">
+                      <ol className="books-grid">
+                        {this.state.books.filter((item) => item.shelf === shelf.shelf).map((bookDetails) => (
+                          <Shelf book={bookDetails} shelfChange={(bookId, shelf) => this.handleShelfChange(bookId, shelf)} />
+                        ))}
+                      </ol>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          )}
+            <Link exact to='/search'>
+              <div className="open-search">
+                <button>Add a book</button>
+              </div>
+            </Link>
+          </div>
+
+        )}
+        />
+
+        <Route exact path='/search' render={() => (
+          <Search shelfChange={(bookId, shelf) => this.handleShelfChange(bookId, shelf)} />
+        )}
+        />
       </div>
+
     )
+
   }
 }
 
