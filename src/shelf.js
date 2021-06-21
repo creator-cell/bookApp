@@ -1,20 +1,10 @@
 import React, { Component } from 'react'
 import './App.css'
 
-
 class Read extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-    }
-  }
-
   render() {
     const { book, shelfChange } = this.props;
-
     return (
-
       <li key={book.id}>
         <div className="book">
           <div className="book-top">
@@ -38,9 +28,8 @@ class Read extends Component {
             book.authors.map((author) => (
               <div className="book-authors" key={author}>{author}</div>
             ))
-          ) : (<div className="book-authors" key=""></div>)}
-
-
+          ) : (<div className="book-authors" key=""></div>)
+          }
         </div>
       </li>
     );
