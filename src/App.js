@@ -3,7 +3,7 @@ import './App.css'
 import * as BooksAPI from './BooksAPI'
 import Shelf from './shelf'
 import Search from './Search'
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, Route, Switch, BrowserRouter } from "react-router-dom";
 
 
 class BooksApp extends React.Component {
@@ -67,45 +67,47 @@ class BooksApp extends React.Component {
   }
   render() {
     return (
-      <div className="app">
-      <Switch>
-        <Route eaxct path='/' render={() => (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-                {this.state.shelves.map((shelf) => (
-                  <div className="bookshelf" key={shelf.name}>
-                    <h2 className="bookshelf-title">{shelf.name}</h2>
-                    <div className="bookshelf-books">
-                      <ol className="books-grid">
-                        {this.state.books.filter((item) => item.shelf === shelf.shelf).map((bookDetails) => (
-                          <Shelf book={bookDetails} shelfChange={(bookId, shelf) => this.handleShelfChange(bookId, shelf)} key={bookDetails.id} />
-                        ))}
-                      </ol>
-                    </div>
+      <BrowserRouter>
+        <Switch>
+          <Route eaxct path='/' render={() => (
+            <div className="app">
+              <div className="list-books">
+                <div className="list-books-title">
+                  <h1>MyReads</h1>
+                </div>
+                <div className="list-books-content">
+                  <div>
+                    {this.state.shelves.map((shelf) => (
+                      <div className="bookshelf" key={shelf.name}>
+                        <h2 className="bookshelf-title">{shelf.name}</h2>
+                        <div className="bookshelf-books">
+                          <ol className="books-grid">
+                            {this.state.books.filter((item) => item.shelf === shelf.shelf).map((bookDetails) => (
+                              <Shelf book={bookDetails} shelfChange={(bookId, shelf) => this.handleShelfChange(bookId, shelf)} key={bookDetails.id} />
+                            ))}
+                          </ol>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+                <Link to='/search'>
+                  <div className="open-search">
+                    <button>Add a book</button>
+                  </div>
+                </Link>
               </div>
             </div>
-            <Link to='/search'>
-              <div className="open-search">
-                <button>Add a book</button>
-              </div>
-            </Link>
-          </div>
 
-        )}
-        />
+          )}
+          />
 
-        <Route exact path='/search' render={() => (
-          <Search shelfChange={(bookId, shelf) => this.handleShelfChange(bookId, shelf)} />
-        )}
-        />
+          <Route exact path='/search' render={() => (
+            <Search shelfChange={(bookId, shelf) => this.handleShelfChange(bookId, shelf)} />
+          )}
+          />
         </Switch>
-      </div>
+      </BrowserRouter>
 
     )
 
