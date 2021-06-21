@@ -76,12 +76,12 @@ class BooksApp extends React.Component {
             <div className="list-books-content">
               <div>
                 {this.state.shelves.map((shelf) => (
-                  <div className="bookshelf">
+                  <div className="bookshelf" key={shelf.name}>
                     <h2 className="bookshelf-title">{shelf.name}</h2>
                     <div className="bookshelf-books">
                       <ol className="books-grid">
                         {this.state.books.filter((item) => item.shelf === shelf.shelf).map((bookDetails) => (
-                          <Shelf book={bookDetails} shelfChange={(bookId, shelf) => this.handleShelfChange(bookId, shelf)} />
+                          <Shelf book={bookDetails} shelfChange={(bookId, shelf) => this.handleShelfChange(bookId, shelf)} key={bookDetails.id} />
                         ))}
                       </ol>
                     </div>
