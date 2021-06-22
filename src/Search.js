@@ -18,14 +18,13 @@ class Read extends Component {
     if (niddle) {
       try {
         BooksAPI.search(niddle).then((response) => {
-          console.log("response -----");
-          console.log(response);
+          
           if (response && !response.hasOwnProperty("error")) {
             this.setState({ books: response })
             this.setState({ foundSearchData: true })
           } else {
             this.setState({ foundSearchData: false })
-            
+
           }
         })
       } catch (error) {
@@ -52,53 +51,51 @@ class Read extends Component {
     }
   }
 
+
   render() {
-    const {onNavigate, booksFromHomeShelf} = this.props
-    const {books, foundSearchData} = this.state
-   
-    books.map((book) => {
-         booksFromHomeShelf.map((bookFromHomeShelf)=>{
-        console.log("book id ---", book.id, "----book details id ---", bookFromHomeShelf.id)
-        if(book.id === bookFromHomeShelf.id){
-          console.log("Matched ----------------------")
-          book.shelf = bookFromHomeShelf.shelf;
-        }else{
-          console.log("Not Matched -----------------------")
-          book.shelf = "none"
-        }
-        return true;
-       
-      })
-      return true;
-    })
+    const { onNavigate, booksFromHomeShelf } = this.props
+    const { books, foundSearchData } = this.state
+    
+    const updatedBooks = books.map((book) => {
+          var result = booksFromHomeShelf.find(bookFromHome => bookFromHome.id === book.id)
+          var shelf = "";
+          if (result) {
+            shelf = {shelf: result.shelf}
+           
+          }else{
+            shelf = {shelf: "none"}
+          }
+          return {...book, shelf}
+        })
+      
     
     return (
-      <div className="search-books">
-        <div className="search-books-bar">
-          <Link to="/">
-            <button className="close-search" onClick={() => onNavigate}>Close</button>
-          </Link>
-          <div className="search-books-input-wrapper">
-            <input type="text" placeholder="Search by title or author" onChange={(e) => this.handleSearch(e.target.value)} />
+        <div className="search-books">
+          <div className="search-books-bar">
+            <Link to="/">
+              <button className="close-search" onClick={() => onNavigate}>Close</button>
+            </Link>
+            <div className="search-books-input-wrapper">
+              <input type="text" placeholder="Search by title or author" onChange={(e) => this.handleSearch(e.target.value)} />
+            </div>
+          </div>
+          <div className="search-books-results">
+            {foundSearchData ? (
+              <ol className="books-grid">
+                {updatedBooks.map((bookDetails) => (
+                  /* Check if the book is present in the shelf */
+                  <Shelf book={bookDetails} shelfChange={(bookId, shelf) => this.addToShelf(bookId, shelf)} key={bookDetails.id} />
+                ))}
+              </ol>
+            ) : (
+                <div>
+                  <h1>Oops! No Results Found</h1>
+                </div>
+              )}
           </div>
         </div>
-        <div className="search-books-results">
-          {foundSearchData ? (
-            <ol className="books-grid">
-              {books.map((bookDetails) => (
-                /* Check if the book is present in the shelf */
-                <Shelf book={bookDetails} shelfChange={(bookId, shelf) => this.addToShelf(bookId, shelf)} key={bookDetails.id} />
-              ))}
-            </ol>
-          ) : (
-              <div>
-                <h1>Oops! No Results Found</h1>
-              </div>
-            )}
-        </div>
-      </div>
-    );
+      );
+    }
   }
-}
 
-export default Read;
+  export default Read;

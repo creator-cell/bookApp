@@ -71,7 +71,7 @@ class BooksApp extends React.Component {
                         <div className="bookshelf-books">
                           <ol className="books-grid">
                             {this.state.books.filter((item) => item.shelf === shelf.shelf).map((bookDetails) => (
-                              <Shelf book={bookDetails} shelfChange={(bookId, shelf) => this.handleShelfChange(bookId, shelf)} key={bookDetails.id} />
+                              <Shelf book={bookDetails} shelfChange={(bookId, shelf) => this.handleShelfChange(bookId, shelf)} key={bookDetails.id} fromSearch="false"/>
                             ))}
                           </ol>
                         </div>
