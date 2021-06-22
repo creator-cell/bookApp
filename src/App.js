@@ -14,7 +14,6 @@ class BooksApp extends React.Component {
       { "shelf": "wantToRead", "name": "Want To Read" },
       { "shelf": "read", "name": "Read" }
     ]
-
   }
 
   // Make api call to get all books
@@ -24,7 +23,6 @@ class BooksApp extends React.Component {
         if (response.length > 0) {
           this.setState({ books: response })
         }
-
       })
     } catch (error) {
       console.log(error);
@@ -54,6 +52,7 @@ class BooksApp extends React.Component {
       console.log(error)
     }
   }
+  
   render() {
     return (
       <BrowserRouter>
@@ -92,7 +91,7 @@ class BooksApp extends React.Component {
           />
 
           <Route exact path='/search' render={() => (
-            <Search shelfChange={(bookId, shelf) => this.handleShelfChange(bookId, shelf)} />
+            <Search shelfChange={(bookId, shelf) => this.handleShelfChange(bookId, shelf)} booksFromHomeShelf={this.state.books} shelves= {this.state.shelves}/>
           )}
           />
         </Switch>

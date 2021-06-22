@@ -18,7 +18,7 @@ class Read extends Component {
     if (niddle) {
       try {
         BooksAPI.search(niddle).then((response) => {
-          console.log(response)
+
           if (response && !response.hasOwnProperty("error")) {
             this.setState({ books: response })
             this.setState({ foundSearchData: true })
@@ -51,25 +51,25 @@ class Read extends Component {
   }
 
   render() {
+    const {onNavigate, booksFromHomeShelf, shelves} = this.props
     return (
       <div className="search-books">
         <div className="search-books-bar">
           <Link to="/">
-            <button className="close-search" onClick={() => this.props.onNavigate}>Close</button>
+            <button className="close-search" onClick={() => onNavigate}>Close</button>
           </Link>
           <div className="search-books-input-wrapper">
             <input type="text" placeholder="Search by title or author" onChange={(e) => this.handleSearch(e.target.value)} />
           </div>
         </div>
-
         <div className="search-books-results">
           {this.state.foundSearchData ? (
             <ol className="books-grid">
               {this.state.books.map((bookDetails) => (
+                /* Check if the book is present in the shelf */
                 <Shelf book={bookDetails} shelfChange={(bookId, shelf) => this.addToShelf(bookId, shelf)} key={bookDetails.id} />
               ))}
             </ol>
-
           ) : (
               <div>
                 <h1>Oops! No Results Found</h1>
