@@ -18,12 +18,14 @@ class Read extends Component {
     if (niddle) {
       try {
         BooksAPI.search(niddle).then((response) => {
-
+          console.log("response -----");
+          console.log(response);
           if (response && !response.hasOwnProperty("error")) {
             this.setState({ books: response })
             this.setState({ foundSearchData: true })
           } else {
             this.setState({ foundSearchData: false })
+            
           }
         })
       } catch (error) {
@@ -51,7 +53,25 @@ class Read extends Component {
   }
 
   render() {
-    const {onNavigate, booksFromHomeShelf, shelves} = this.props
+    const {onNavigate, booksFromHomeShelf} = this.props
+    const {books, foundSearchData} = this.state
+   
+    books.map((book) => {
+         booksFromHomeShelf.map((bookFromHomeShelf)=>{
+        console.log("book id ---", book.id, "----book details id ---", bookFromHomeShelf.id)
+        if(book.id === bookFromHomeShelf.id){
+          console.log("Matched ----------------------")
+          book.shelf = bookFromHomeShelf.shelf;
+        }else{
+          console.log("Not Matched -----------------------")
+          book.shelf = "none"
+        }
+        return true;
+       
+      })
+      return true;
+    })
+    
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -63,9 +83,9 @@ class Read extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          {this.state.foundSearchData ? (
+          {foundSearchData ? (
             <ol className="books-grid">
-              {this.state.books.map((bookDetails) => (
+              {books.map((bookDetails) => (
                 /* Check if the book is present in the shelf */
                 <Shelf book={bookDetails} shelfChange={(bookId, shelf) => this.addToShelf(bookId, shelf)} key={bookDetails.id} />
               ))}

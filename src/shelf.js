@@ -4,6 +4,7 @@ import './App.css'
 class Read extends Component {
   render() {
     const { book, shelfChange } = this.props;
+    console.log(book.id , "------", book.title)
     return (
       <li key={book.id}>
         <div className="book">
