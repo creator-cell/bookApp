@@ -15,17 +15,24 @@ class Read extends Component {
     }
   }
   handleSearch = (niddle) => {
-    try {
-      BooksAPI.search(niddle).then((response) => {
-        if (response) {
-          this.setState({ books: response })
-          this.setState({ foundSearchData: true })
+    if (niddle) {
+      try {
+        BooksAPI.search(niddle).then((response) => {
           console.log(response)
-        }
-      })
-    } catch (error) {
-      console.log(error);
+          if (response && !response.hasOwnProperty("error")) {
+            this.setState({ books: response })
+            this.setState({ foundSearchData: true })
+          } else {
+            this.setState({ foundSearchData: false })
+          }
+        })
+      } catch (error) {
+        this.setState({ foundSearchData: false })
+      }
+    } else {
+      this.setState({ foundSearchData: false })
     }
+
   }
 
   addToShelf = (bookId, shelf) => {
@@ -59,7 +66,7 @@ class Read extends Component {
           {this.state.foundSearchData ? (
             <ol className="books-grid">
               {this.state.books.map((bookDetails) => (
-                <Shelf book={bookDetails} shelfChange={(bookId, shelf) => this.addToShelf(bookId, shelf)} />
+                <Shelf book={bookDetails} shelfChange={(bookId, shelf) => this.addToShelf(bookId, shelf)} key={bookDetails.id} />
               ))}
             </ol>
 
