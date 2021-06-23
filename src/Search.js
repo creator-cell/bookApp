@@ -60,14 +60,15 @@ class Read extends Component {
           var result = booksFromHomeShelf.find(bookFromHome => bookFromHome.id === book.id)
           var shelf = "";
           if (result) {
-            shelf = {shelf: result.shelf}
+            
+            shelf = result.shelf
            
           }else{
-            shelf = {shelf: "none"}
+            shelf = "none"
           }
           return {...book, shelf}
         })
-      
+     
     
     return (
         <div className="search-books">
